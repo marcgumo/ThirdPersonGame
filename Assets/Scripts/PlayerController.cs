@@ -33,11 +33,23 @@ public class PlayerController : MonoBehaviour
         ChangeState(playerState);
 
         charControl = GetComponent<CharacterController>();
+
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     void Update()
     {
         StateUpdate();
+
+#if UNITY_EDITOR
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            if (Cursor.lockState == CursorLockMode.Locked)
+                Cursor.lockState = CursorLockMode.None;
+            else
+                Cursor.lockState = CursorLockMode.Locked;
+        }
+#endif
     }
 
     private void ChangeState(MovementStates newState)

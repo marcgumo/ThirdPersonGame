@@ -3633,7 +3633,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 301156153}
-  m_LocalRotation: {x: 0.31274745, y: 0.000000023112834, z: -0.000000007610236, w: 0.9498364}
+  m_LocalRotation: {x: 0.2870647, y: -0.000000032973567, z: 0.000000009881446, w: 0.9579112}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -8508,6 +8508,7 @@ GameObject:
   m_Component:
   - component: {fileID: 893515481}
   - component: {fileID: 893515480}
+  - component: {fileID: 893515482}
   m_Layer: 0
   m_Name: CameraPlayer
   m_TagString: Untagged
@@ -8612,8 +8613,8 @@ MonoBehaviour:
     m_Radius: 5
   - m_Height: 5
     m_Radius: 5
-  - m_Height: 1
-    m_Radius: 5
+  - m_Height: 0
+    m_Radius: 2
   m_LegacyHeadingBias: 3.4028235e+38
   m_Rigs:
   - {fileID: 1822070201}
@@ -8637,6 +8638,36 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &893515482
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 893515479}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e501d18bb52cf8c40b1853ca4904654f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_CollideAgainst:
+    serializedVersion: 2
+    m_Bits: 1
+  m_IgnoreTag: Player
+  m_TransparentLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_MinimumDistanceFromTarget: 0.1
+  m_AvoidObstacles: 1
+  m_DistanceLimit: 0
+  m_MinimumOcclusionTime: 0
+  m_CameraRadius: 0.1
+  m_Strategy: 0
+  m_MaximumEffort: 4
+  m_SmoothingTime: 0
+  m_Damping: 0.6
+  m_DampingWhenOccluded: 0.6
+  m_OptimalTargetDistance: 0
 --- !u!1001 &904283988
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9046,7 +9077,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0.31274745, y: 0.000000036544606, z: -0.000000012032843, w: 0.9498364}
+  m_LocalRotation: {x: 0.2870647, y: -0.000000065933335, z: 0.000000019758755, w: 0.95791125}
   m_LocalPosition: {x: 0, y: 11.84, z: -5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -16221,7 +16252,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1822070200}
-  m_LocalRotation: {x: 0.3299727, y: 0.000000016242655, z: -0.000000005677634, w: 0.94399047}
+  m_LocalRotation: {x: 0.30444112, y: -0.00000004014619, z: 0.000000012831236, w: 0.95253116}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -17175,7 +17206,7 @@ GameObject:
   - component: {fileID: 1887043347}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -17209,7 +17240,7 @@ CharacterController:
   m_Enabled: 1
   serializedVersion: 2
   m_Height: 1.9
-  m_Radius: 0.3
+  m_Radius: 0.4
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
@@ -17227,7 +17258,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ca145df125b5b24fb33cb45c3007993, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speedMove: 4
+  speedMove: 4.5
   jumpForce: 5
   gravity: -15
   dashDuration: 0.6
@@ -18903,7 +18934,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2028785643}
-  m_LocalRotation: {x: 0.29546452, y: 0.00000001643818, z: -0.000000005083874, w: 0.95535374}
+  m_LocalRotation: {x: 0.26963955, y: -0.000000023487587, z: 0.000000006576778, w: 0.9629614}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -19729,7 +19760,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2081813131}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.049, z: -0.039}
+  m_LocalPosition: {x: 0, y: 1.468, z: -0.039}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
