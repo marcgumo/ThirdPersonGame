@@ -35,6 +35,8 @@ public class PlayerController : MonoBehaviour
 
     int numberOfClicks = 0;
 
+    [SerializeField] private SphereCollider attackCollider;
+
     void Start()
     {
         playerState = MovementStates.Initial;
@@ -272,7 +274,7 @@ public class PlayerController : MonoBehaviour
     {
         if (playerState == MovementStates.Dash)
             return;
-        
+
         if (numberOfClicks == 1 && anim.GetCurrentAnimatorStateInfo(0).IsName("attack_1"))
         {
             anim.SetInteger("attack", 0);
@@ -303,6 +305,14 @@ public class PlayerController : MonoBehaviour
             numberOfClicks = 0;
             ChangeState(MovementStates.Onground);
         }
+    }
+
+    public void SetAttackCollider()
+    {
+        if (playerState == MovementStates.Dash)
+            return;
+
+        attackCollider.enabled = true;
     }
 
     private void OnEnable()
