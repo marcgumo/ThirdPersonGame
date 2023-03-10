@@ -79,6 +79,7 @@ public class PlayerController : MonoBehaviour
                 anim.SetBool("doubleJumping", false);
                 break;
             case MovementStates.Dash:
+                anim.SetBool("dashing", false);
                 break;
             case MovementStates.Attack:
                 break;
@@ -103,6 +104,8 @@ public class PlayerController : MonoBehaviour
                 break;
             case MovementStates.Dash:
                 Invoke("DashLater", 0.1f);
+
+                anim.SetBool("dashing", true);
                 break;
             case MovementStates.Attack:
                 break;
