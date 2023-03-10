@@ -76,6 +76,7 @@ public class PlayerController : MonoBehaviour
             case MovementStates.Jumping:
                 break;
             case MovementStates.DoubleJumping:
+                anim.SetBool("doubleJumping", false);
                 break;
             case MovementStates.Dash:
                 break;
@@ -97,6 +98,8 @@ public class PlayerController : MonoBehaviour
                 break;
             case MovementStates.DoubleJumping:
                 verticalVelocity.y = jumpForce;
+
+                anim.SetBool("doubleJumping", true);
                 break;
             case MovementStates.Dash:
                 Invoke("DashLater", 0.1f);
@@ -196,6 +199,8 @@ public class PlayerController : MonoBehaviour
         ConstantGravity();
 
         anim.SetFloat("speed", playerSpeed);
+
+        anim.SetBool("isGrounded", charControl.isGrounded);
     }
 
     private void ConstantGravity()
