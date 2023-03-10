@@ -9,6 +9,7 @@ public class AnimationEventController : MonoBehaviour
 
     private void InvokeEvent()
     {
-        onAnimationEvent?.Invoke();
+        if (GetComponentInParent<PlayerController>() != null)
+            onAnimationEvent?.Invoke();
     }
 }

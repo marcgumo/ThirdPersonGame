@@ -111,6 +111,8 @@ public class PlayerController : MonoBehaviour
                 Invoke("DashLater", 0.1f);
 
                 anim.SetBool("dashing", true);
+
+                attackCollider.enabled = false;
                 break;
             case MovementStates.Attack:
                 OnClickAttack();
@@ -307,12 +309,12 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void SetAttackCollider()
+    public void SetAttackCollider(bool value)
     {
         if (playerState == MovementStates.Dash)
             return;
 
-        attackCollider.enabled = true;
+        attackCollider.enabled = value;
     }
 
     private void OnEnable()
