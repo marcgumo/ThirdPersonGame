@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class EnemyController : MonoBehaviour
 {
@@ -11,9 +12,25 @@ public class EnemyController : MonoBehaviour
 
     private MovementStates enemyState;
 
+    [Header("Patrolling settings")]
+    [SerializeField] private float patrollingStopTime = 2f;
+    [SerializeField] private List<Transform> patroList;
+
+    Vector3 walkPoint;
+    bool walkPointSet;
+    float currentPatrollingStopTime;
+    int currentPatrollingPosition = 0;
+
+    NavMeshAgent agent;
+
     void Start()
     {
         enemyState = MovementStates.Initial;
+
+        agent = GetComponent<NavMeshAgent>();
+        currentPatrollingStopTime = patrollingStopTime;
+        walkPointSet = true;
+        walkPoint = patroList[currentPatrollingPosition].position;
     }
 
     void Update()
@@ -62,6 +79,7 @@ public class EnemyController : MonoBehaviour
                 ChangeState(MovementStates.Patrolling);
                 break;
             case MovementStates.Patrolling:
+                Patrolling();
                 break;
             case MovementStates.Chase:
                 break;
@@ -70,5 +88,32 @@ public class EnemyController : MonoBehaviour
             default:
                 break;
         }
+    }
+
+    private void Patrolling()
+    {
+        if (!walkPointSet) SearchPatrolPoint();
+        else agent.SetDestination(walkPoint);
+
+        Vector3 distanceToWalkPoint = transform.position - walkPoint;
+
+        if (distanceToWalkPoint.magnitude < 0.1f)
+        {
+            if (currentPatrollingStopTime <= 0)
+                walkPointSet = false;
+            else currentPatrollingStopTime -= Time.deltaTime;
+        }
+    }
+
+    private void SearchPatrolPoint()
+    {
+        currentPatrollingStopTime = patrollingStopTime;
+        currentPatrollingPosition++;
+
+        if (currentPatrollingPosition >= patroList.Count)
+            currentPatrollingPosition = 0;
+
+        walkPoint = patroList[currentPatrollingPosition].position;
+        walkPointSet = true;
     }
 }
