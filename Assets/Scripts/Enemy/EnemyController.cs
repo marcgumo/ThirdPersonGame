@@ -23,6 +23,13 @@ public class EnemyController : MonoBehaviour
 
     NavMeshAgent agent;
 
+    [Header("Chase settings")]
+    [SerializeField] private float sightRange = 7f;
+    [SerializeField] private LayerMask playerLayer;
+    bool playerInSightRange;
+
+    Transform player;
+
     void Start()
     {
         enemyState = MovementStates.Initial;
@@ -31,11 +38,15 @@ public class EnemyController : MonoBehaviour
         currentPatrollingStopTime = patrollingStopTime;
         walkPointSet = true;
         walkPoint = patroList[currentPatrollingPosition].position;
+
+        player = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
     void Update()
     {
         StateUpdate();
+
+        playerInSightRange = Physics.CheckSphere(transform.position, sightRange, playerLayer);
     }
 
     private void ChangeState(MovementStates newState)
@@ -115,5 +126,13 @@ public class EnemyController : MonoBehaviour
 
         walkPoint = patroList[currentPatrollingPosition].position;
         walkPointSet = true;
+    }
+
+
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, sightRange);
     }
 }
