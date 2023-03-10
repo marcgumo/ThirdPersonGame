@@ -33,6 +33,7 @@ public class PlayerController : MonoBehaviour
 
     Animator anim;
 
+    int numberOfClicks = 0;
 
     void Start()
     {
@@ -108,6 +109,9 @@ public class PlayerController : MonoBehaviour
                 anim.SetBool("dashing", true);
                 break;
             case MovementStates.Attack:
+                OnClickAttack();
+                playerSpeed = 0;
+                anim.SetFloat("speed", playerSpeed);
                 break;
         }
 
@@ -136,6 +140,9 @@ public class PlayerController : MonoBehaviour
 
                 if (Input.GetButtonDown("Fire3"))
                     ChangeState(MovementStates.Dash);
+
+                if (Input.GetButtonDown("Fire1"))
+                    ChangeState(MovementStates.Attack);
 
                 break;
             case MovementStates.OnAir:
@@ -168,6 +175,8 @@ public class PlayerController : MonoBehaviour
             case MovementStates.Dash:
                 break;
             case MovementStates.Attack:
+                if (Input.GetButtonDown("Fire1"))
+                    OnClickAttack();
                 break;
         }
     }
@@ -243,5 +252,59 @@ public class PlayerController : MonoBehaviour
         }
 
         ChangeState(MovementStates.Onground);
+    }
+
+    private void OnClickAttack()
+    {
+        numberOfClicks++;
+
+        if (numberOfClicks == 1)
+            anim.SetInteger("attack", 1);
+
+        numberOfClicks = Mathf.Clamp(numberOfClicks, 0, 3);
+    }
+
+    public void CheckCombo()
+    {
+        if (numberOfClicks == 1 && anim.GetCurrentAnimatorStateInfo(0).IsName("attack_1"))
+        {
+            anim.SetInteger("attack", 0);
+            numberOfClicks = 0;
+            ChangeState(MovementStates.Onground);
+        }
+
+        if (numberOfClicks >= 2 && anim.GetCurrentAnimatorStateInfo(0).IsName("attack_1"))
+        {
+            anim.SetInteger("attack", 2);
+        }
+
+        if (numberOfClicks == 2 && anim.GetCurrentAnimatorStateInfo(0).IsName("attack_2"))
+        {
+            anim.SetInteger("attack", 0);
+            numberOfClicks = 0;
+            ChangeState(MovementStates.Onground);
+        }
+
+        if (numberOfClicks >= 3 && anim.GetCurrentAnimatorStateInfo(0).IsName("attack_2"))
+        {
+            anim.SetInteger("attack", 3);
+        }
+
+        if (anim.GetCurrentAnimatorStateInfo(0).IsName("attack_3"))
+        {
+            anim.SetInteger("attack", 0);
+            numberOfClicks = 0;
+            ChangeState(MovementStates.Onground);
+        }
+    }
+
+    private void OnEnable()
+    {
+        AnimationEventController.onAnimationEvent += CheckCombo;
+    }
+
+    private void OnDisable()
+    {
+        AnimationEventController.onAnimationEvent -= CheckCombo;
     }
 }
