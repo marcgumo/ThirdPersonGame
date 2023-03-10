@@ -81,6 +81,8 @@ public class PlayerController : MonoBehaviour
                 break;
             case MovementStates.Dash:
                 anim.SetBool("dashing", false);
+                anim.SetInteger("attack", 0);
+                numberOfClicks = 0;
                 break;
             case MovementStates.Attack:
                 break;
@@ -177,6 +179,8 @@ public class PlayerController : MonoBehaviour
             case MovementStates.Attack:
                 if (Input.GetButtonDown("Fire1"))
                     OnClickAttack();
+                if (Input.GetButtonDown("Fire3"))
+                    ChangeState(MovementStates.Dash);
                 break;
         }
     }
@@ -266,6 +270,9 @@ public class PlayerController : MonoBehaviour
 
     public void CheckCombo()
     {
+        if (playerState == MovementStates.Dash)
+            return;
+        
         if (numberOfClicks == 1 && anim.GetCurrentAnimatorStateInfo(0).IsName("attack_1"))
         {
             anim.SetInteger("attack", 0);
