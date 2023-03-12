@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour
         Initial, Onground, OnAir, Jumping, DoubleJumping, Dash, Attack
     }
 
-    private MovementStates playerState;
+    public MovementStates playerState { get; set; }
 
     [Header("General settings")]
     [SerializeField] private float speedMove = 4f;
@@ -90,7 +90,7 @@ public class PlayerController : MonoBehaviour
                 break;
         }
 
-        //Outcoming triggering condition
+        //Incoming triggering condition
         switch (newState)
         {
             case MovementStates.Initial:

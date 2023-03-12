@@ -11,10 +11,14 @@ public class AttackBehaviourController : StateMachineBehaviour
 
     PlayerController player;
 
+    EnemyController enemy;
+
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         if (isPlayer)
             player = animator.GetComponentInParent<PlayerController>();
+        else
+            enemy = animator.GetComponentInParent<EnemyController>();
     }
 
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -23,5 +27,7 @@ public class AttackBehaviourController : StateMachineBehaviour
 
         if (isPlayer)
             player.SetAttackCollider(enableAttack);
+        else
+            enemy.SetAttackCollider(enableAttack);
     }
 }

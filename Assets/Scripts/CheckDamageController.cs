@@ -21,7 +21,8 @@ public class CheckDamageController : MonoBehaviour
             if (other.tag == "Player")
             {
                 //Debug.Log("Attacking player");
-                TakeDamage(other.gameObject, 10, other.tag);
+                if (other.gameObject.GetComponentInParent<PlayerController>().playerState != PlayerController.MovementStates.Dash)
+                    TakeDamage(other.gameObject, 10, other.tag);
             }
         }
     }
