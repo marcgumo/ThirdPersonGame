@@ -35,7 +35,9 @@ public class TurretController : MonoBehaviour
 
             if (shotCounter <= 0)
             {
-                Debug.Log("Instantiate Projectile");
+                //Debug.Log("Instantiate Projectile");
+
+                Instantiate(projectile, firePoint.position, firePoint.rotation);
                 shotCounter = timeBetweenAttacks;
             }
         }
