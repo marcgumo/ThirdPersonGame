@@ -317,6 +317,12 @@ public class PlayerController : MonoBehaviour
         attackCollider.enabled = value;
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.GetComponent<iTakeItem>() != null)
+            other.GetComponent<iTakeItem>().TakeItem();
+    }
+
     private void OnEnable()
     {
         AnimationEventController.onAnimationEvent += CheckCombo;
