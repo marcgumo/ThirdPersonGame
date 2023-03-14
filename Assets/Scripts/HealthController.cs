@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,6 +17,8 @@ public class HealthController : MonoBehaviour
     [Header("Stats settings")]
     [SerializeField] private int maxHealth;
     int currentHealth;
+
+    public static Action<GameObject> onEnemyDead; 
 
     void Start()
     {
@@ -43,6 +46,7 @@ public class HealthController : MonoBehaviour
 
             if (currentCharacterType == CharacterType.Enemy01)
             {
+                onEnemyDead?.Invoke(gameObject);
                 Destroy(gameObject);
             }
         }
