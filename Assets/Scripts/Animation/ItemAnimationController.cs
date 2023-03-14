@@ -5,6 +5,18 @@ using UnityEngine;
 
 public class ItemAnimationController : MonoBehaviour
 {
+    public enum ItemType
+    {
+        Generic, Door
+    }
+
+    [Header("Puzle settings")]
+    public ItemType currentItemType;
+    [SerializeField] private bool inverseRotation;
+    [SerializeField, Range(0f, 360.0f)] private float rotationLimit = 100f;
+    int rotationValue;
+
+
     [Header("General settings")]
     [SerializeField, Range(0f, 180.0f)] private float degreesPerSecond = 75f;
     [SerializeField, Range(0f, 5f)] private float verticalLength = 0.75f;
@@ -12,8 +24,16 @@ public class ItemAnimationController : MonoBehaviour
 
     Vector3 startPosition;
 
+
     void Start()
     {
+        if (inverseRotation == true)
+        {
+            rotationValue = -1;
+            transform.Rotate(new Vector3(0, degreesPerSecond * rotationValue * Time.deltaTime, 0), Space.World);
+        }
+        else rotationValue = 1;
+
         startPosition = transform.position;
     }
 
@@ -25,7 +45,29 @@ public class ItemAnimationController : MonoBehaviour
 
     private void Animate()
     {
-        transform.Rotate(new Vector3(0, degreesPerSecond * Time.deltaTime, 0), Space.World);
+        if (currentItemType == ItemType.Generic)
+            transform.Rotate(new Vector3(0, degreesPerSecond * rotationValue * Time.deltaTime, 0), Space.World);
+        else
+        {
+            if (inverseRotation)
+            {
+                Debug.Log(Mathf.Round(Mathf.Abs(transform.localEulerAngles.y)));
+                if (Mathf.Round(Mathf.Abs(transform.localEulerAngles.y)) > 360 - rotationLimit)
+                    transform.Rotate(new Vector3(0, degreesPerSecond * rotationValue * Time.deltaTime, 0), Space.World);
+            }
+            else
+            {
+                Debug.Log(Mathf.Round(Mathf.Abs(transform.localEulerAngles.y)));
+                if (Mathf.Round(Mathf.Abs(transform.localEulerAngles.y)) < rotationLimit)
+                {
+                    transform.Rotate(new Vector3(0, degreesPerSecond * rotationValue * Time.deltaTime, 0), Space.World);
+                    Debug.Log("rotating");
+                }
+            }
+
+            return;
+        }
+
 
         float verticalY = Mathf.PingPong(verticalSpeed * Time.time, verticalLength);
         transform.position = new Vector3(transform.position.x, startPosition.y + verticalY, transform.position.z);
