@@ -159,7 +159,7 @@ public class PlayerController : MonoBehaviour
                 if (Input.GetButtonDown("Fire3"))
                     ChangeState(MovementStates.Dash);
 
-                if (Input.GetButtonDown("Fire1"))
+                if (Input.GetButtonDown("Fire1") && !UIController.gameIsPaused)
                     ChangeState(MovementStates.Attack);
 
                 break;
@@ -193,7 +193,7 @@ public class PlayerController : MonoBehaviour
             case MovementStates.Dash:
                 break;
             case MovementStates.Attack:
-                if (Input.GetButtonDown("Fire1"))
+                if (Input.GetButtonDown("Fire1") && !UIController.gameIsPaused)
                     OnClickAttack();
                 if (Input.GetButtonDown("Fire3"))
                     ChangeState(MovementStates.Dash);
@@ -370,6 +370,19 @@ public class PlayerController : MonoBehaviour
         {
             initialPosition = other.transform.parent.GetChild(1).position;
             initialRotation = other.transform.parent.GetChild(1).rotation;
+        }
+
+        if (other.tag == "QuizPuzzle")
+        {
+            UIController.TextToDisplay(true);
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.tag == "QuizPuzzle")
+        {
+            UIController.TextToDisplay(false);
         }
     }
 
