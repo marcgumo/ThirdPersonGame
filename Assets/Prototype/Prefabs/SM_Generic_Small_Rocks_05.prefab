@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4261006123550364}
   - component: {fileID: 33380596797007124}
   - component: {fileID: 23668133509670566}
+  - component: {fileID: -9162314040705618340}
   m_Layer: 0
   m_Name: SM_Generic_Small_Rocks_05
   m_TagString: Untagged
@@ -83,3 +84,17 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &-9162314040705618340
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1875828765980602}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4300000, guid: 6055577e4f794be4fb975210c267ebef, type: 3}

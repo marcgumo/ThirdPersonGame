@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -44,6 +45,11 @@ public class PlayerController : MonoBehaviour
 
     UIController UIController;
 
+    [Header("Falling damage settings")]
+    [SerializeField] private float impactThresold;
+    float charVelocity;
+    bool fallDamage;
+
     void Start()
     {
         playerState = MovementStates.Initial;
@@ -75,6 +81,11 @@ public class PlayerController : MonoBehaviour
                 Cursor.lockState = CursorLockMode.Locked;
         }
 #endif
+    }
+
+    private void FixedUpdate()
+    {
+        charVelocity = charControl.velocity.y;
     }
 
     private void ChangeState(MovementStates newState)
@@ -110,9 +121,11 @@ public class PlayerController : MonoBehaviour
             case MovementStates.Onground:
                 break;
             case MovementStates.OnAir:
+                fallDamage = false;
                 break;
             case MovementStates.Jumping:
                 verticalVelocity.y = jumpForce;
+                fallDamage = false;
                 break;
             case MovementStates.DoubleJumping:
                 verticalVelocity.y = jumpForce;
@@ -244,6 +257,19 @@ public class PlayerController : MonoBehaviour
         if (charControl.isGrounded && verticalVelocity.y < 0)
         {
             verticalVelocity.y = -5f;
+
+            if (!fallDamage)
+            {
+                float acceleration = (charControl.velocity.y - charVelocity) / Time.fixedDeltaTime;
+                float impactForce = Mathf.Abs(acceleration);
+
+                if (impactForce >= impactThresold)
+                {
+                    //Debug.Log(impactForce);
+                    GetComponent<HealthController>().TakeDamage(Mathf.RoundToInt(impactForce * 0.01f), tag);
+                    fallDamage = true;
+                }
+            }
         }
     }
 
@@ -343,6 +369,11 @@ public class PlayerController : MonoBehaviour
         ChangeState(MovementStates.Initial);
     }
 
+    private void RestartCharacterPosition()
+    {
+        MoveCharacter(initialPosition, initialRotation);
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.GetComponent<iTakeItem>() != null)
@@ -364,7 +395,9 @@ public class PlayerController : MonoBehaviour
         }
 
         if (other.tag == "DeadZone")
-            MoveCharacter(initialPosition, initialRotation);
+        {
+            GetComponent<HealthController>().TakeDamage(100, tag);
+        }
 
         if (other.tag == "CheckPoint")
         {
@@ -389,10 +422,12 @@ public class PlayerController : MonoBehaviour
     private void OnEnable()
     {
         AnimationEventController.onAnimationEvent += CheckCombo;
+        HealthController.onPlayerDead += RestartCharacterPosition;
     }
 
     private void OnDisable()
     {
         AnimationEventController.onAnimationEvent -= CheckCombo;
+        HealthController.onPlayerDead -= RestartCharacterPosition;
     }
 }

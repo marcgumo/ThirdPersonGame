@@ -70,7 +70,7 @@ public class EnemyController : MonoBehaviour
         StateUpdate();
 
         //playerInSightRange = Physics.CheckSphere(transform.position, sightRange, playerLayer);
-        //playerInAttackRange = Physics.CheckSphere(transform.position, attackRange, playerLayer);
+        playerInAttackRange = Physics.CheckSphere(transform.position, attackRange, playerLayer);
 
         StartCoroutine(SightRoutine());
     }

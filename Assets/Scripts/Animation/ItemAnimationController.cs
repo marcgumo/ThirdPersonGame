@@ -51,17 +51,17 @@ public class ItemAnimationController : MonoBehaviour
         {
             if (inverseRotation)
             {
-                Debug.Log(Mathf.Round(Mathf.Abs(transform.localEulerAngles.y)));
+                //Debug.Log(Mathf.Round(Mathf.Abs(transform.localEulerAngles.y)));
                 if (Mathf.Round(Mathf.Abs(transform.localEulerAngles.y)) > 360 - rotationLimit)
                     transform.Rotate(new Vector3(0, degreesPerSecond * rotationValue * Time.unscaledDeltaTime, 0), Space.World);
             }
             else
             {
-                Debug.Log(Mathf.Round(Mathf.Abs(transform.localEulerAngles.y)));
+                //Debug.Log(Mathf.Round(Mathf.Abs(transform.localEulerAngles.y)));
                 if (Mathf.Round(Mathf.Abs(transform.localEulerAngles.y)) < rotationLimit)
                 {
                     transform.Rotate(new Vector3(0, degreesPerSecond * rotationValue * Time.unscaledDeltaTime, 0), Space.World);
-                    Debug.Log("rotating");
+                    //Debug.Log("rotating");
                 }
             }
 

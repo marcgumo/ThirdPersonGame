@@ -18,7 +18,7 @@ public class UIController : MonoBehaviour
 
     public bool gameIsPaused { get; set; }
 
-    [Header("Quiz psnel settings")]
+    [Header("Quiz panel settings")]
     [SerializeField] private GameObject textPanel;
     [SerializeField] private CinemachineFreeLook playerCamera;
     [SerializeField] private UnityEvent quizAction;
