@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -27,6 +28,9 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private float sightRange = 7f;
     [SerializeField] private LayerMask playerLayer;
     bool playerInSightRange;
+
+    [SerializeField] private LayerMask obstacleLayer;
+    [SerializeField, Range(0.0f, 360.0f)] private float sightAngle = 130;
 
     Transform player;
 
@@ -65,9 +69,10 @@ public class EnemyController : MonoBehaviour
     {
         StateUpdate();
 
-        playerInSightRange = Physics.CheckSphere(transform.position, sightRange, playerLayer);
+        //playerInSightRange = Physics.CheckSphere(transform.position, sightRange, playerLayer);
+        //playerInAttackRange = Physics.CheckSphere(transform.position, attackRange, playerLayer);
 
-        playerInAttackRange = Physics.CheckSphere(transform.position, attackRange, playerLayer);
+        StartCoroutine(SightRoutine());
     }
 
     private void ChangeState(MovementStates newState)
@@ -261,6 +266,54 @@ public class EnemyController : MonoBehaviour
             return;
 
         attackCollider.enabled = value;
+    }
+
+    private IEnumerator SightRoutine()
+    {
+        float startTime = Time.time;
+
+        while (Time.time < startTime + 0.2f)
+        {
+            SightCheck();
+            yield return null;
+        }
+    }
+
+    private void SightCheck()
+    {
+        Collider[] sightChecks = Physics.OverlapSphere(transform.position, sightRange, playerLayer);
+
+        if (sightChecks.Length != 0)
+        {
+            Transform target = sightChecks[0].transform;
+
+            Vector3 directionToTarget = (target.transform.position - transform.position).normalized;
+
+            if (Vector3.Angle(transform.forward, directionToTarget) < sightAngle * 0.5)
+            {
+                float distanceToTarget = Vector3.Distance(transform.position, target.transform.position);
+
+                if (!Physics.Raycast(transform.position, directionToTarget, distanceToTarget, obstacleLayer))
+                    playerInSightRange = true;
+                else
+                    playerInSightRange = false;
+            }
+            else
+                playerInSightRange = false;
+        }
+        else if (playerInSightRange)
+            playerInSightRange = false;
+
+    }
+
+    public float GetSightAngle()
+    {
+        return sightAngle;
+    }
+
+    public float GetSightRange()
+    {
+        return sightRange;
     }
 
     private void OnDrawGizmosSelected()

@@ -30,7 +30,12 @@ public class PuzzleController : MonoBehaviour
             case PuzzleType.Generic:
                 break;
             case PuzzleType.Door:
-                gameObject.GetComponent<ItemAnimationController>().enabled = true;
+
+                for (int i = 0; i < transform.parent.childCount; i++)
+                {
+                    if (transform.parent.GetChild(i).GetComponent<ItemAnimationController>() != null)
+                        transform.parent.GetChild(i).GetComponent<ItemAnimationController>().enabled = true;
+                }
 
                 StartCoroutine(ResetCameraPriority(playerCamera.m_XAxis.m_MaxSpeed, playerCamera.m_YAxis.m_MaxSpeed));
 

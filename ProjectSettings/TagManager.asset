@@ -6,6 +6,11 @@ TagManager:
   tags:
   - Enemy
   - UIController
+  - DeadZone
+  - JumpingPlatform
+  - CoinsList
+  - CheckPoint
+  - QuizPuzzle
   layers:
   - Default
   - TransparentFX
@@ -16,7 +21,7 @@ TagManager:
   - Turret
   - Projectile
   - Collectable
-  - 
+  - Obstacle
   - 
   - 
   - 
