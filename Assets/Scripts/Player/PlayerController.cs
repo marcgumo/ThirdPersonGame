@@ -37,6 +37,11 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private SphereCollider attackCollider;
 
+    Vector3 initialPosition;
+    Quaternion initialRotation;
+
+    Coroutine dashCoroutine;
+
     void Start()
     {
         playerState = MovementStates.Initial;
@@ -48,6 +53,9 @@ public class PlayerController : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
 
         anim = GetComponentInChildren<Animator>();
+
+        initialPosition = transform.position;
+        initialRotation = transform.rotation;
     }
 
     void Update()
@@ -236,7 +244,7 @@ public class PlayerController : MonoBehaviour
 
     private void DashLater()
     {
-        StartCoroutine(Dash());
+        dashCoroutine = StartCoroutine(Dash());
     }
 
     IEnumerator Dash()
@@ -317,6 +325,19 @@ public class PlayerController : MonoBehaviour
         attackCollider.enabled = value;
     }
 
+    private void MoveCharacter(Vector3 position, Quaternion rotation)
+    {
+        if (dashCoroutine != null)
+            StopCoroutine(dashCoroutine);
+        charControl.Move(Vector3.zero);
+        
+        charControl.enabled = false;
+        transform.position = position;
+        transform.rotation = rotation;
+        charControl.enabled = true;
+        ChangeState(MovementStates.Initial);
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.GetComponent<iTakeItem>() != null)
@@ -337,6 +358,14 @@ public class PlayerController : MonoBehaviour
             ChangeState(MovementStates.OnAir);
         }
 
+        if (other.tag == "DeadZone")
+            MoveCharacter(initialPosition, initialRotation);
+
+        if (other.tag == "CheckPoint")
+        {
+            initialPosition = other.transform.parent.GetChild(1).position;
+            initialRotation = other.transform.parent.GetChild(1).rotation;
+        }
     }
 
     private void OnEnable()
