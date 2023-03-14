@@ -327,7 +327,12 @@ public class PlayerController : MonoBehaviour
             if (playerState == MovementStates.DoubleJumping)
                 anim.SetTrigger("jumpingPlatform");
 
-            verticalVelocity.y = jumpForce * 2;
+            if (other.GetComponentInParent<EnemyController>())
+            {
+                verticalVelocity.y = jumpForce * 1.5f;
+                other.GetComponentInParent<HealthController>().TakeDamage(30, other.transform.parent.tag);
+            }
+            else verticalVelocity.y = jumpForce * 2;
 
             ChangeState(MovementStates.OnAir);
         }
