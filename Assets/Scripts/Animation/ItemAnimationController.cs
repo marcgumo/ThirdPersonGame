@@ -10,7 +10,7 @@ public class ItemAnimationController : MonoBehaviour
         Generic, Door
     }
 
-    [Header("Puzle settings")]
+    [Header("Puzzle settings")]
     public ItemType currentItemType;
     [SerializeField] private bool inverseRotation;
     [SerializeField, Range(0f, 360.0f)] private float rotationLimit = 100f;
