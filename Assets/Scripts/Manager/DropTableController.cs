@@ -5,6 +5,7 @@ using UnityEngine;
 public class DropTableController : MonoBehaviour
 {
     [System.Serializable]
+    
     public class LootDrop
     {
         public GameObject item;
