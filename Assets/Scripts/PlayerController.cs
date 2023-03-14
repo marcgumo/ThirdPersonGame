@@ -321,6 +321,17 @@ public class PlayerController : MonoBehaviour
     {
         if (other.GetComponent<iTakeItem>() != null)
             other.GetComponent<iTakeItem>().TakeItem();
+
+        if (other.gameObject.tag == "JumpingPlatform" && playerState != MovementStates.Dash)
+        {
+            if (playerState == MovementStates.DoubleJumping)
+                anim.SetTrigger("jumpingPlatform");
+
+            verticalVelocity.y = jumpForce * 2;
+
+            ChangeState(MovementStates.OnAir);
+        }
+
     }
 
     private void OnEnable()
