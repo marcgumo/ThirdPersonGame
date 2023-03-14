@@ -42,6 +42,8 @@ public class PlayerController : MonoBehaviour
 
     Coroutine dashCoroutine;
 
+    UIController UIController;
+
     void Start()
     {
         playerState = MovementStates.Initial;
@@ -56,6 +58,8 @@ public class PlayerController : MonoBehaviour
 
         initialPosition = transform.position;
         initialRotation = transform.rotation;
+
+        UIController = GameObject.FindGameObjectWithTag("UIController").GetComponent<UIController>();
     }
 
     void Update()
@@ -149,7 +153,7 @@ public class PlayerController : MonoBehaviour
                 if (Input.GetButtonDown("Jump"))
                     ChangeState(MovementStates.Jumping);
 
-                if (!charControl.isGrounded)
+                if (!charControl.isGrounded && !UIController.gameIsPaused)
                     ChangeState(MovementStates.OnAir);
 
                 if (Input.GetButtonDown("Fire3"))
@@ -228,7 +232,8 @@ public class PlayerController : MonoBehaviour
 
         anim.SetFloat("speed", playerSpeed);
 
-        anim.SetBool("isGrounded", charControl.isGrounded);
+        if (!UIController.gameIsPaused)
+            anim.SetBool("isGrounded", charControl.isGrounded);
     }
 
     private void ConstantGravity()
@@ -330,7 +335,7 @@ public class PlayerController : MonoBehaviour
         if (dashCoroutine != null)
             StopCoroutine(dashCoroutine);
         charControl.Move(Vector3.zero);
-        
+
         charControl.enabled = false;
         transform.position = position;
         transform.rotation = rotation;

@@ -1,3 +1,4 @@
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,6 +12,17 @@ public class PuzzleController : MonoBehaviour
 
     [SerializeField] private PuzzleType currentPuzzleType;
 
+    [Header("Door puzzle settings")]
+    [SerializeField] private CinemachineFreeLook playerCamera;
+    [SerializeField] private CinemachineVirtualCamera doorPuzzleCamera;
+
+    UIController UIController;
+
+    private void Start()
+    {
+        UIController = GameObject.FindGameObjectWithTag("UIController").GetComponent<UIController>();
+    }
+
     public void FinishPuzzle()
     {
         switch (currentPuzzleType)
@@ -19,10 +31,43 @@ public class PuzzleController : MonoBehaviour
                 break;
             case PuzzleType.Door:
                 gameObject.GetComponent<ItemAnimationController>().enabled = true;
+
+                StartCoroutine(ResetCameraPriority(playerCamera.m_XAxis.m_MaxSpeed, playerCamera.m_YAxis.m_MaxSpeed));
+
+                playerCamera.Priority = 0;
+                doorPuzzleCamera.Priority = 1;
+
+                playerCamera.m_XAxis.m_MaxSpeed = 0;
+                playerCamera.m_YAxis.m_MaxSpeed = 0;
+
+                Time.timeScale = 0;
+                UIController.gameIsPaused = true;
                 break;
             default:
                 break;
         }
+    }
+
+    IEnumerator ResetCameraPriority(float xAxis, float yAxis)
+    {
+        yield return new WaitForSecondsRealtime(3);
+        playerCamera.Priority = 1;
+        doorPuzzleCamera.Priority = 0;
+
+        yield return new WaitForSecondsRealtime(1);
+        playerCamera.m_XAxis.m_MaxSpeed = xAxis;
+        playerCamera.m_YAxis.m_MaxSpeed = yAxis;
+
+        Time.timeScale = 1;
+
+        StartCoroutine(ResumeGameLater());
+    }
+
+    IEnumerator ResumeGameLater()
+    {
+        yield return null;
+
+        UIController.gameIsPaused = false;
     }
 
     private void OnEnable()

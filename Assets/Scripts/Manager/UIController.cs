@@ -14,6 +14,8 @@ public class UIController : MonoBehaviour
 
     public static Action OnUpdateCoins;
 
+    public bool gameIsPaused { get; set; }
+
     private void Start()
     {
         startCoins = GameObject.FindGameObjectWithTag("CoinsList").transform.childCount;
