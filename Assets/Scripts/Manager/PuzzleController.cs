@@ -46,7 +46,7 @@ public class PuzzleController : MonoBehaviour
                 playerCamera.m_YAxis.m_MaxSpeed = 0;
 
                 Time.timeScale = 0;
-                UIController.gameIsPaused = true;
+                UIController.GameIsPaused = true;
                 break;
             default:
                 break;
@@ -72,7 +72,7 @@ public class PuzzleController : MonoBehaviour
     {
         yield return null;
 
-        UIController.gameIsPaused = false;
+        UIController.GameIsPaused = false;
     }
 
     private void OnEnable()

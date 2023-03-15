@@ -10,7 +10,7 @@ public class PlayerController : MonoBehaviour
         Initial, Onground, OnAir, Jumping, DoubleJumping, Dash, Attack
     }
 
-    public MovementStates playerState { get; set; }
+    public MovementStates PlayerState { get; set; }
 
     [Header("General settings")]
     [SerializeField] private float speedMove = 4f;
@@ -52,13 +52,13 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-        playerState = MovementStates.Initial;
+        PlayerState = MovementStates.Initial;
 
-        ChangeState(playerState);
+        ChangeState(PlayerState);
 
         charControl = GetComponent<CharacterController>();
 
-        Cursor.lockState = CursorLockMode.Locked;
+        //Cursor.lockState = CursorLockMode.Locked;
 
         anim = GetComponentInChildren<Animator>();
 
@@ -91,7 +91,7 @@ public class PlayerController : MonoBehaviour
     private void ChangeState(MovementStates newState)
     {
         //Outcoming triggering condition
-        switch (playerState)
+        switch (PlayerState)
         {
             case MovementStates.Initial:
                 break;
@@ -146,12 +146,12 @@ public class PlayerController : MonoBehaviour
                 break;
         }
 
-        playerState = newState;
+        PlayerState = newState;
     }
 
     private void StateUpdate()
     {
-        switch (playerState)
+        switch (PlayerState)
         {
             case MovementStates.Initial:
                 PlayerMovement();
@@ -166,13 +166,13 @@ public class PlayerController : MonoBehaviour
                 if (Input.GetButtonDown("Jump"))
                     ChangeState(MovementStates.Jumping);
 
-                if (!charControl.isGrounded && !UIController.gameIsPaused)
+                if (!charControl.isGrounded && !UIController.GameIsPaused)
                     ChangeState(MovementStates.OnAir);
 
                 if (Input.GetButtonDown("Fire3"))
                     ChangeState(MovementStates.Dash);
 
-                if (Input.GetButtonDown("Fire1") && !UIController.gameIsPaused)
+                if (Input.GetButtonDown("Fire1") && !UIController.GameIsPaused)
                     ChangeState(MovementStates.Attack);
 
                 break;
@@ -206,7 +206,7 @@ public class PlayerController : MonoBehaviour
             case MovementStates.Dash:
                 break;
             case MovementStates.Attack:
-                if (Input.GetButtonDown("Fire1") && !UIController.gameIsPaused)
+                if (Input.GetButtonDown("Fire1") && !UIController.GameIsPaused)
                     OnClickAttack();
                 if (Input.GetButtonDown("Fire3"))
                     ChangeState(MovementStates.Dash);
@@ -245,7 +245,7 @@ public class PlayerController : MonoBehaviour
 
         anim.SetFloat("speed", playerSpeed);
 
-        if (!UIController.gameIsPaused)
+        if (!UIController.GameIsPaused)
             anim.SetBool("isGrounded", charControl.isGrounded);
     }
 
@@ -313,7 +313,7 @@ public class PlayerController : MonoBehaviour
 
     public void CheckCombo()
     {
-        if (playerState == MovementStates.Dash)
+        if (PlayerState == MovementStates.Dash)
             return;
 
         if (numberOfClicks == 1 && anim.GetCurrentAnimatorStateInfo(0).IsName("attack_1"))
@@ -350,7 +350,7 @@ public class PlayerController : MonoBehaviour
 
     public void SetAttackCollider(bool value)
     {
-        if (playerState == MovementStates.Dash)
+        if (PlayerState == MovementStates.Dash)
             return;
 
         attackCollider.enabled = value;
@@ -379,9 +379,9 @@ public class PlayerController : MonoBehaviour
         if (other.GetComponent<iTakeItem>() != null)
             other.GetComponent<iTakeItem>().TakeItem();
 
-        if (other.gameObject.tag == "JumpingPlatform" && playerState != MovementStates.Dash)
+        if (other.gameObject.tag == "JumpingPlatform" && PlayerState != MovementStates.Dash)
         {
-            if (playerState == MovementStates.DoubleJumping)
+            if (PlayerState == MovementStates.DoubleJumping)
                 anim.SetTrigger("jumpingPlatform");
 
             if (other.GetComponentInParent<EnemyController>())
