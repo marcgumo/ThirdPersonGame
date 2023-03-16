@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 public class UIController : MonoBehaviour
 {
@@ -170,6 +171,7 @@ public class UIController : MonoBehaviour
                 ResumeGameQuiz();
                 quizReward.SetActive(true);
                 GameObject.FindGameObjectWithTag("QuizPuzzle").SetActive(false);
+                textPanel.SetActive(false);
                 break;
             case 2:
                 Debug.Log("Incorrect Answer");
@@ -204,6 +206,11 @@ public class UIController : MonoBehaviour
             StopGame();
             ShowHideMenu((int)Menus.LevelCompletedMenu);
         }
+    }
+
+    public void ReloadScene()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     private void OnEnable()
