@@ -26,6 +26,7 @@ public class HealthController : MonoBehaviour
 
     public static Action<GameObject> onEnemyDead;
     public static Action onPlayerDead;
+    public static Action onGameOver;
 
     void Start()
     {
@@ -54,17 +55,20 @@ public class HealthController : MonoBehaviour
                 currentLifes--;
                 if (lifesTextCounter) LifesUpdate();
 
-                currentHealth = maxHealth;
-                if (hpBar) HPBarUpdate();
-
-                onPlayerDead?.Invoke();
 
                 if (currentLifes <= 0)
                 {
                     currentLifes = 0;
                     if (lifesTextCounter) LifesUpdate();
 
-                    //GameOver
+                    onGameOver?.Invoke();
+                }
+                else
+                {
+                    onPlayerDead?.Invoke();
+
+                    currentHealth = maxHealth;
+                    if (hpBar) HPBarUpdate();
                 }
 
                 return;

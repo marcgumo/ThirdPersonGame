@@ -23,7 +23,6 @@ public class UIController : MonoBehaviour
     int totalPuzzles;
 
     public static Action OnUpdateCoins;
-    public static Action OnUpdatePuzzles;
 
     public bool GameIsPaused { get; set; }
 
@@ -31,6 +30,7 @@ public class UIController : MonoBehaviour
     [SerializeField] private GameObject textPanel;
     [SerializeField] private CinemachineFreeLook playerCamera;
     [SerializeField] private UnityEvent quizAction;
+    [SerializeField] private GameObject quizReward;
 
     public bool quizReady { get; set; }
     public bool quizOpen { get; set; }
@@ -53,25 +53,28 @@ public class UIController : MonoBehaviour
 
     private void Update()
     {
-        if (quizReady && !quizOpen && Input.GetKeyDown(KeyCode.E))
+        if (!gameOverPanel.activeSelf && !levelCompletedPanel.activeSelf && !mainMenuPanel.activeSelf)
         {
-            playerCameraValues[0] = playerCamera.m_XAxis.m_MaxSpeed;
-            playerCameraValues[1] = playerCamera.m_YAxis.m_MaxSpeed;
+            if (quizReady && !quizOpen && Input.GetKeyDown(KeyCode.E) && !pausePanel.activeSelf)
+            {
+                playerCameraValues[0] = playerCamera.m_XAxis.m_MaxSpeed;
+                playerCameraValues[1] = playerCamera.m_YAxis.m_MaxSpeed;
 
-            StartGameQuiz();
+                StartGameQuiz();
 
-            StopGame();
-        }
+                StopGame();
+            }
 
-        if (Input.GetKeyDown(KeyCode.Q) && !GameIsPaused)
-        {
-            ShowHideMenu((int)Menus.PauseMenu);
-            StopGame();
-        }
-        else if (Input.GetKeyDown(KeyCode.Q))
-        {
-            ShowHideMenu((int)Menus.PauseMenu);
-            ResumeGame();
+            if (Input.GetKeyDown(KeyCode.Q) && !GameIsPaused && !quizOpen)
+            {
+                ShowHideMenu((int)Menus.PauseMenu);
+                StopGame();
+            }
+            else if (Input.GetKeyDown(KeyCode.Q) && !quizOpen)
+            {
+                ShowHideMenu((int)Menus.PauseMenu);
+                ResumeGame();
+            }
         }
     }
 
@@ -105,7 +108,7 @@ public class UIController : MonoBehaviour
         }
     }
 
-    private void ResumeGameQuiz()
+    public void ResumeGameQuiz()
     {
         quizOpen = false;
         TextToDisplay(true);
@@ -139,6 +142,9 @@ public class UIController : MonoBehaviour
 
     public void StopGame()
     {
+        playerCameraValues[0] = playerCamera.m_XAxis.m_MaxSpeed;
+        playerCameraValues[1] = playerCamera.m_YAxis.m_MaxSpeed;
+
         Time.timeScale = 0;
 
         GameIsPaused = true;
@@ -162,6 +168,8 @@ public class UIController : MonoBehaviour
                 Debug.Log("Correct Answer");
                 ResumeGame();
                 ResumeGameQuiz();
+                quizReward.SetActive(true);
+                GameObject.FindGameObjectWithTag("QuizPuzzle").SetActive(false);
                 break;
             case 2:
                 Debug.Log("Incorrect Answer");
@@ -169,6 +177,12 @@ public class UIController : MonoBehaviour
                 ResumeGameQuiz();
                 break;
         }
+    }
+
+    private void GameOver()
+    {
+        StopGame();
+        ShowHideMenu((int)Menus.GameOverMenu);
     }
 
     public void UpdateTotalCoins()
@@ -187,7 +201,18 @@ public class UIController : MonoBehaviour
 
         if (totalPuzzles == 3)
         {
-            OnUpdatePuzzles?.Invoke();
+            StopGame();
+            ShowHideMenu((int)Menus.LevelCompletedMenu);
         }
+    }
+
+    private void OnEnable()
+    {
+        HealthController.onGameOver += GameOver;
+    }
+
+    private void OnDisable()
+    {
+        HealthController.onGameOver -= GameOver;
     }
 }
